@@ -1,11 +1,17 @@
-/* Main Styles */
+/* Base styles */
+.bg-overlay {
+    background-color: rgba(17, 24, 39, 0.8);
+}
+
+/* Context Menu Styles */
 .context-menu {
     position: fixed;
     z-index: 1000;
     background: #2D3748;
     border: 1px solid #4A5568;
     border-radius: 0.375rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    min-width: 200px;
 }
 
 .context-menu-item {
@@ -14,6 +20,7 @@
     display: flex;
     align-items: center;
     color: #E2E8F0;
+    transition: all 0.2s;
 }
 
 .context-menu-item:hover {
@@ -25,6 +32,7 @@
     margin-right: 8px;
 }
 
+/* Upload Progress Styles */
 .upload-progress {
     position: fixed;
     bottom: 20px;
@@ -32,11 +40,113 @@
     background: #2D3748;
     padding: 1rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     min-width: 300px;
     z-index: 1000;
 }
 
+.upload-progress .progress-bar {
+    transition: width 0.3s ease;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    background: #2D3748;
+    border: 1px solid #4A5568;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* File Drop Zone Styles */
+#dropZone.drag-over {
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px dashed #3B82F6;
+}
+
 #dropMessage {
-    z-index: 1050;
+    background-color: rgba(17, 24, 39, 0.8);
+}
+
+/* Table Styles */
+#fileTable th {
+    position: relative;
+    padding-right: 1.5rem;
+}
+
+#fileTable th i.fa-sort {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+#fileTable th:hover i.fa-sort {
+    opacity: 1;
+}
+
+#fileTable tbody tr {
+    transition: background-color 0.2s;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1A202C;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4A5568;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+}
+
+/* Animation Styles */
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .upload-progress {
+        min-width: auto;
+        width: calc(100% - 2rem);
+        left: 1rem;
+        right: 1rem;
+    }
+
+    .context-menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 1rem 1rem 0 0;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    .context-menu-item {
+        padding: 1rem;
+    }
 }
