@@ -7,9 +7,157 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/base64-js/1.5.1/base64.min.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-200">
-    <!-- Rest of your HTML remains the same -->
+    <!-- Header -->
+    <header class="flex items-center p-2 border-b border-gray-700">
+        <div class="flex items-center">
+            <img src="/api/placeholder/30/30" alt="Drive Logo" class="mr-2">
+            <span class="text-xl">Drive</span>
+        </div>
+        <div class="flex-grow mx-4">
+            <div class="flex items-center bg-gray-800 rounded-lg px-4 py-2">
+                <i class="fas fa-search mr-2"></i>
+                <input type="text" id="searchInput" placeholder="Search in Drive" class="bg-transparent w-full outline-none">
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="hover:bg-gray-800 p-2 rounded"><i class="fas fa-sliders-h"></i></button>
+            <button class="hover:bg-gray-800 p-2 rounded"><i class="fas fa-cog"></i></button>
+            <button class="hover:bg-gray-800 p-2 rounded"><i class="fas fa-th"></i></button>
+            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">J</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <nav class="w-60 p-4 border-r border-gray-700">
+            <button id="newButton" class="bg-white bg-opacity-10 text-white rounded-full px-6 py-2 mb-6 hover:bg-opacity-20 transition-all duration-200">
+                <i class="fas fa-plus mr-2"></i> New
+            </button>
+            <ul class="space-y-2">
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('home')">
+                    <i class="fas fa-home mr-3"></i> Home
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('my-drive')">
+                    <i class="fas fa-hdd mr-3"></i> My Drive
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('shared')">
+                    <i class="fas fa-users mr-3"></i> Shared drives
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('shared-with-me')">
+                    <i class="fas fa-share-alt mr-3"></i> Shared with me
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('recent')">
+                    <i class="fas fa-clock mr-3"></i> Recent
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('starred')">
+                    <i class="fas fa-star mr-3"></i> Starred
+                </li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer" onclick="navigateTo('trash')">
+                    <i class="fas fa-trash mr-3"></i> Trash
+                </li>
+            </ul>
+            <div class="mt-4 text-sm text-gray-400">51.7 MB used</div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow p-4 overflow-auto relative" id="dropZone">
+            <!-- Upload Progress -->
+            <div id="uploadProgress" class="upload-progress hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="uploadFileName">Uploading...</span>
+                    <button onclick="cancelUpload()" class="text-red-400 hover:text-red-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="bg-gray-700 rounded-full h-2 overflow-hidden">
+                    <div id="uploadProgressBar" class="bg-blue-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- File Upload Input -->
+            <input type="file" id="fileInput" multiple class="hidden">
+
+            <!-- Breadcrumb -->
+            <div class="flex items-center mb-4 breadcrumb">
+                <span class="text-gray-400 cursor-pointer hover:underline" onclick="navigateTo('home')">Home</span>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="flex items-center mb-4 space-x-2">
+                <div class="relative">
+                    <button onclick="toggleDropdown('typeDropdown')" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 flex items-center dropdown-trigger">
+                        Type <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <div id="typeDropdown" class="hidden absolute top-full left-0 mt-1 bg-gray-800 rounded shadow-lg py-2 w-48 z-50">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">All Items</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Folders</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Documents</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">PDFs</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="w-full" id="fileTable">
+                <thead>
+                    <tr class="text-left text-sm">
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(0)">
+                            Name <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(1)">
+                            Last modified <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(2)">
+                            File size <i class="fas fa-sort ml-1"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Initial empty state -->
+                    <tr>
+                        <td colspan="3" class="text-center py-8 text-gray-500">
+                            <i class="fas fa-folder-open text-4xl mb-2"></i>
+                            <p>No files in this folder</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Context Menu -->
+            <div id="contextMenu" class="context-menu hidden">
+                <div class="context-menu-item" onclick="handleContextAction('open')">
+                    <i class="fas fa-folder-open"></i>Open
+                </div>
+                <div class="context-menu-item" onclick="handleContextAction('download')">
+                    <i class="fas fa-download"></i>Download
+                </div>
+                <div class="context-menu-item" onclick="handleContextAction('share')">
+                    <i class="fas fa-share-alt"></i>Share
+                </div>
+                <div class="context-menu-item" onclick="handleContextAction('rename')">
+                    <i class="fas fa-edit"></i>Rename
+                </div>
+                <div class="context-menu-item" onclick="handleContextAction('move')">
+                    <i class="fas fa-folder-plus"></i>Move to
+                </div>
+                <div class="context-menu-item text-red-400" onclick="handleContextAction('delete')">
+                    <i class="fas fa-trash"></i>Delete
+                </div>
+            </div>
+
+            <!-- Drop Zone Message -->
+            <div id="dropMessage" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                <div class="p-8 rounded-lg bg-gray-800 text-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl mb-4 text-blue-400"></i>
+                    <p class="text-xl">Drop files here to upload</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
