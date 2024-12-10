@@ -164,27 +164,27 @@ function initializeDropZone() {
     const dropZone = document.getElementById('dropZone');
     const dropMessage = document.getElementById('dropMessage');
     
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('drag-over');
-        dropMessage.classList.remove('hidden');
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+            dropMessage.classList.remove('hidden');
+        });
     });
     
-    dropZone.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-        dropMessage.classList.add('hidden');
-    });
-    
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-        dropMessage.classList.add('hidden');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            Array.from(files).forEach(file => uploadFile(file));
-        }
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            dropMessage.classList.add('hidden');
+            
+            if (eventName === 'drop') {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    Array.from(files).forEach(file => uploadFile(file));
+                }
+            }
+        });
     });
 }
 
@@ -222,9 +222,27 @@ function sortTable(column) {
     const tbody = table.querySelector('tbody');
     const rows = Array.from(tbody.querySelectorAll('tr'));
 
+    // Update sort icons
+    const headers = table.querySelectorAll('th');
+    headers.forEach(header => {
+        header.querySelector('.fa-sort').className = 'fas fa-sort ml-1';
+    });
+    
+    const currentHeader = headers[column];
+    currentHeader.querySelector('.fa-sort').className = 
+        sortDirection === 1 ? 'fas fa-sort-up ml-1' : 'fas fa-sort-down ml-1';
+
     rows.sort((a, b) => {
-        const aValue = a.children[column].textContent;
-        const bValue = b.children[column].textContent;
+        let aValue = a.children[column].textContent;
+        let bValue = b.children[column].textContent;
+        
+        // Handle size column specially
+        if (column === 2) { // File size column
+            aValue = parseFloat(aValue) || 0;
+            bValue = parseFloat(bValue) || 0;
+            return (aValue - bValue) * sortDirection;
+        }
+        
         return aValue.localeCompare(bValue) * sortDirection;
     });
 
@@ -234,6 +252,15 @@ function sortTable(column) {
 
 // Navigation and File Operations
 function navigateTo(page) {
+    // Update active state in sidebar
+    document.querySelectorAll('nav li').forEach(item => {
+        if (item.textContent.toLowerCase().includes(page)) {
+            item.classList.add('bg-gray-800');
+        } else {
+            item.classList.remove('bg-gray-800');
+        }
+    });
+
     const paths = {
         'home': '/',
         'my-drive': '/my-drive',
@@ -244,47 +271,122 @@ function navigateTo(page) {
     };
     
     // Update URL without page reload
-    history.pushState({}, '', paths[page] || '/');
-    // You would typically load content here based on the page
-    console.log(`Navigated to: ${page}`);
+    history.pushState({page}, '', paths[page] || '/');
+    
+    // Clear table and show loading state
+    const tbody = document.querySelector('#fileTable tbody');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center py-4">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Loading ${page} content...
+            </td>
+        </tr>
+    `;
+    
+    // Simulate content loading
+    setTimeout(() => {
+        loadPageContent(page);
+    }, 1000);
+}
+
+function loadPageContent(page) {
+    const tbody = document.querySelector('#fileTable tbody');
+    tbody.innerHTML = ''; // Clear loading state
+    
+    // Add some dummy content based on the page
+    const dummyContent = {
+        'home': [
+            { name: 'Documents', type: 'folder', date: 'Dec 1, 2024', size: '-' },
+            { name: 'Projects.pdf', type: 'file', date: 'Dec 5, 2024', size: '2.5 MB' }
+        ],
+        'recent': [
+            { name: 'Recent File 1.docx', type: 'file', date: 'Dec 10, 2024', size: '500 KB' },
+            { name: 'Recent File 2.xlsx', type: 'file', date: 'Dec 9, 2024', size: '750 KB' }
+        ]
+    };
+    
+    (dummyContent[page] || []).forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-800 cursor-pointer';
+        tr.innerHTML = `
+            <td class="py-2">
+                <i class="${item.type === 'folder' ? 'fas fa-folder' : getFileIcon(item.name)} mr-2"></i>
+                ${item.name}
+            </td>
+            <td>${item.date}</td>
+            <td>${item.size}</td>
+        `;
+        tr.addEventListener('contextmenu', showContextMenu);
+        tbody.appendChild(tr);
+    });
 }
 
 function openFile(fileName) {
-    // Implement file opening logic
-    console.log(`Opening file: ${fileName}`);
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    const previewableExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'txt'];
+    
+    if (previewableExtensions.includes(fileExtension)) {
+        // Show preview (in real app, this would open a preview modal)
+        alert(`Previewing ${fileName}`);
+    } else {
+        // Download non-previewable files
+        downloadFile(fileName);
+    }
 }
 
 function openFolder(folderName) {
-    navigateTo(folderName);
+    navigateTo(folderName.toLowerCase());
 }
 
 function downloadFile(fileName) {
-    // Implement file download logic
-    console.log(`Downloading: ${fileName}`);
+    // Create a fake download link
+    const link = document.createElement('a');
+    link.href = '#';
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Show download started notification
+    alert(`Download started: ${fileName}`);
 }
 
 function shareFile(fileName) {
-    // Implement sharing logic
-    console.log(`Sharing: ${fileName}`);
+    const shareUrl = `https://yourdrive.com/share/${btoa(fileName)}`;
+    // In a real app, you'd want to show a sharing modal here
+    prompt('Copy this link to share:', shareUrl);
 }
 
 function renameFile(fileName) {
     const newName = prompt('Enter new name:', fileName);
     if (newName && newName !== fileName) {
-        // Implement rename logic
-        console.log(`Renaming ${fileName} to ${newName}`);
+        // Find and update the file in the table
+        const fileRows = document.querySelectorAll('#fileTable tbody tr');
+        fileRows.forEach(row => {
+            const nameCell = row.querySelector('td');
+            if (nameCell.textContent.trim() === fileName) {
+                const icon = nameCell.querySelector('i').className;
+                nameCell.innerHTML = `<i class="${icon} mr-2"></i>${newName}`;
+            }
+        });
     }
 }
 
 function moveFile(fileName) {
-    // Implement move logic
-    console.log(`Moving: ${fileName}`);
+    // In a real app, this would open a folder selection modal
+    alert(`Moving ${fileName} - Folder selection would appear here`);
 }
 
 function deleteFile(fileName) {
     if (confirm(`Are you sure you want to delete ${fileName}?`)) {
-        // Implement delete logic
-        console.log(`Deleting: ${fileName}`);
+        // Find and remove the file from the table
+        const fileRows = document.querySelectorAll('#fileTable tbody tr');
+        fileRows.forEach(row => {
+            if (row.querySelector('td').textContent.trim() === fileName) {
+                row.remove();
+            }
+        });
     }
 }
 
