@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive Clone</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <!-- Header -->
+    <header class="flex items-center p-2 border-b border-gray-700">
+        <div class="flex items-center">
+            <img src="/api/placeholder/30/30" alt="Drive Logo" class="mr-2">
+            <span class="text-xl">Drive</span>
+        </div>
+        <div class="flex-grow mx-4">
+            <div class="flex items-center bg-gray-800 rounded-lg px-4 py-2">
+                <i class="fas fa-search mr-2"></i>
+                <input type="text" placeholder="Search in Drive" class="bg-transparent w-full outline-none">
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <i class="fas fa-sliders-h"></i>
+            <i class="fas fa-cog"></i>
+            <i class="fas fa-th"></i>
+            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">J</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <nav class="w-60 p-4 border-r border-gray-700">
+            <button class="bg-white bg-opacity-10 text-white rounded-full px-6 py-2 mb-6">
+                <i class="fas fa-plus mr-2"></i> New
+            </button>
+            <ul class="space-y-2">
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-home mr-3"></i> Home</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-clock mr-3"></i> Activity</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-th-large mr-3"></i> Workspaces</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-hdd mr-3"></i> My Drive</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-users mr-3"></i> Shared drives</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-share-alt mr-3"></i> Shared with me</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-clock mr-3"></i> Recent</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-star mr-3"></i> Starred</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-ban mr-3"></i> Spam</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-trash mr-3"></i> Trash</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-cloud mr-3"></i> Storage</li>
+            </ul>
+            <div class="mt-4 text-sm text-gray-400">51.7 MB used</div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow p-4">
+            <!-- Breadcrumb -->
+            <div class="flex items-center mb-4">
+                <span class="text-gray-400">Operations</span>
+                <i class="fas fa-chevron-right mx-2 text-gray-600"></i>
+                <span class="text-gray-400">HR</span>
+                <i class="fas fa-chevron-right mx-2 text-gray-600"></i>
+                <span>Security Engineer #1</span>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="flex items-center mb-4 space-x-2">
+                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">Type</button>
+                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">People</button>
+                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">Modified</button>
+            </div>
+
+            <!-- File List -->
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left text-sm">
+                        <th class="pb-2">Name</th>
+                        <th class="pb-2">Last modified</th>
+                        <th class="pb-2">File size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-gray-800">
+                        <td class="py-2"><i class="fas fa-folder mr-2"></i>Security Engineer #1 Resumes</td>
+                        <td>Nov 27, 2024</td>
+                        <td>—</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800">
+                        <td class="py-2"><i class="fas fa-file-alt mr-2"></i>AI Security Engineer Practical Exercise</td>
+                        <td>12:58 PM</td>
+                        <td>6 KB</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800">
+                        <td class="py-2"><i class="fas fa-file-pdf mr-2"></i>AI Security Engineer Practical Exercise.pdf</td>
+                        <td>12:59 PM</td>
+                        <td>67 KB</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>
