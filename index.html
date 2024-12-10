@@ -17,14 +17,20 @@
         <div class="flex-grow mx-4">
             <div class="flex items-center bg-gray-800 rounded-lg px-4 py-2">
                 <i class="fas fa-search mr-2"></i>
-                <input type="text" placeholder="Search in Drive" class="bg-transparent w-full outline-none">
+                <input type="text" id="searchInput" placeholder="Search in Drive" class="bg-transparent w-full outline-none">
             </div>
         </div>
         <div class="flex items-center space-x-4">
-            <i class="fas fa-sliders-h"></i>
-            <i class="fas fa-cog"></i>
-            <i class="fas fa-th"></i>
-            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">J</div>
+            <button class="hover:bg-gray-800 p-2 rounded">
+                <i class="fas fa-sliders-h"></i>
+            </button>
+            <button class="hover:bg-gray-800 p-2 rounded">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="hover:bg-gray-800 p-2 rounded">
+                <i class="fas fa-th"></i>
+            </button>
+            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-orange-600">J</div>
         </div>
     </header>
 
@@ -32,64 +38,92 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <nav class="w-60 p-4 border-r border-gray-700">
-            <button class="bg-white bg-opacity-10 text-white rounded-full px-6 py-2 mb-6">
+            <button class="bg-white bg-opacity-10 text-white rounded-full px-6 py-2 mb-6 hover:bg-opacity-20 transition-all duration-200">
                 <i class="fas fa-plus mr-2"></i> New
             </button>
             <ul class="space-y-2">
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-home mr-3"></i> Home</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-clock mr-3"></i> Activity</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-th-large mr-3"></i> Workspaces</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-hdd mr-3"></i> My Drive</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-users mr-3"></i> Shared drives</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-share-alt mr-3"></i> Shared with me</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-clock mr-3"></i> Recent</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-star mr-3"></i> Starred</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-ban mr-3"></i> Spam</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-trash mr-3"></i> Trash</li>
-                <li class="flex items-center p-2 hover:bg-gray-800 rounded"><i class="fas fa-cloud mr-3"></i> Storage</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('home')"><i class="fas fa-home mr-3"></i> Home</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('activity')"><i class="fas fa-clock mr-3"></i> Activity</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('workspaces')"><i class="fas fa-th-large mr-3"></i> Workspaces</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('my-drive')"><i class="fas fa-hdd mr-3"></i> My Drive</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('shared')"><i class="fas fa-users mr-3"></i> Shared drives</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('shared-with-me')"><i class="fas fa-share-alt mr-3"></i> Shared with me</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('recent')"><i class="fas fa-clock mr-3"></i> Recent</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('starred')"><i class="fas fa-star mr-3"></i> Starred</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('spam')"><i class="fas fa-ban mr-3"></i> Spam</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('trash')"><i class="fas fa-trash mr-3"></i> Trash</li>
+                <li class="flex items-center p-2 hover:bg-gray-800 rounded cursor-pointer transition-all duration-200" onclick="navigateTo('storage')"><i class="fas fa-cloud mr-3"></i> Storage</li>
             </ul>
             <div class="mt-4 text-sm text-gray-400">51.7 MB used</div>
         </nav>
 
         <!-- Main Content Area -->
-        <main class="flex-grow p-4">
+        <main class="flex-grow p-4 overflow-auto">
             <!-- Breadcrumb -->
             <div class="flex items-center mb-4">
-                <span class="text-gray-400">Operations</span>
+                <span class="text-gray-400 cursor-pointer hover:underline" onclick="navigateTo('operations')">Operations</span>
                 <i class="fas fa-chevron-right mx-2 text-gray-600"></i>
-                <span class="text-gray-400">HR</span>
+                <span class="text-gray-400 cursor-pointer hover:underline" onclick="navigateTo('hr')">HR</span>
                 <i class="fas fa-chevron-right mx-2 text-gray-600"></i>
                 <span>Security Engineer #1</span>
             </div>
 
             <!-- Toolbar -->
             <div class="flex items-center mb-4 space-x-2">
-                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">Type</button>
-                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">People</button>
-                <button class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">Modified</button>
+                <div class="relative">
+                    <button onclick="toggleDropdown('typeDropdown')" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 flex items-center">
+                        Type <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <div id="typeDropdown" class="hidden absolute top-full left-0 mt-1 bg-gray-800 rounded shadow-lg py-2 w-48">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">All Items</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Folders</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Documents</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">PDFs</a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleDropdown('peopleDropdown')" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 flex items-center">
+                        People <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <div id="peopleDropdown" class="hidden absolute top-full left-0 mt-1 bg-gray-800 rounded shadow-lg py-2 w-48">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Shared with me</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Not shared</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Specific person...</a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleDropdown('modifiedDropdown')" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 flex items-center">
+                        Modified <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <div id="modifiedDropdown" class="hidden absolute top-full left-0 mt-1 bg-gray-800 rounded shadow-lg py-2 w-48">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Last modified</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Last opened by me</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">Last modified by me</a>
+                    </div>
+                </div>
             </div>
 
             <!-- File List -->
-            <table class="w-full">
+            <table class="w-full" id="fileTable">
                 <thead>
                     <tr class="text-left text-sm">
-                        <th class="pb-2">Name</th>
-                        <th class="pb-2">Last modified</th>
-                        <th class="pb-2">File size</th>
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(0)">Name <i class="fas fa-sort ml-1"></i></th>
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(1)">Last modified <i class="fas fa-sort ml-1"></i></th>
+                        <th class="pb-2 cursor-pointer hover:text-white" onclick="sortTable(2)">File size <i class="fas fa-sort ml-1"></i></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover:bg-gray-800">
+                    <tr class="hover:bg-gray-800 cursor-pointer" onclick="openFolder('resumes')">
                         <td class="py-2"><i class="fas fa-folder mr-2"></i>Security Engineer #1 Resumes</td>
                         <td>Nov 27, 2024</td>
                         <td>—</td>
                     </tr>
-                    <tr class="hover:bg-gray-800">
+                    <tr class="hover:bg-gray-800 cursor-pointer" onclick="openFile('exercise')">
                         <td class="py-2"><i class="fas fa-file-alt mr-2"></i>AI Security Engineer Practical Exercise</td>
                         <td>12:58 PM</td>
                         <td>6 KB</td>
                     </tr>
-                    <tr class="hover:bg-gray-800">
+                    <tr class="hover:bg-gray-800 cursor-pointer" onclick="openFile('exercise-pdf')">
                         <td class="py-2"><i class="fas fa-file-pdf mr-2"></i>AI Security Engineer Practical Exercise.pdf</td>
                         <td>12:59 PM</td>
                         <td>67 KB</td>
@@ -98,5 +132,71 @@
             </table>
         </main>
     </div>
+
+    <script>
+        // Dropdown functionality
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const allDropdowns = document.querySelectorAll('[id$="Dropdown"]');
+            allDropdowns.forEach(d => {
+                if (d.id !== id) d.classList.add('hidden');
+            });
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('button')) {
+                const dropdowns = document.querySelectorAll('[id$="Dropdown"]');
+                dropdowns.forEach(d => d.classList.add('hidden'));
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#fileTable tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Sorting functionality
+        let sortDirection = 1;
+        function sortTable(column) {
+            const table = document.getElementById('fileTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                const aText = a.cells[column].textContent;
+                const bText = b.cells[column].textContent;
+                return aText.localeCompare(bText) * sortDirection;
+            });
+
+            sortDirection *= -1;
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // Navigation
+        function navigateTo(page) {
+            console.log(`Navigating to ${page}`);
+            // Add actual navigation logic here
+        }
+
+        // File/Folder operations
+        function openFolder(folderId) {
+            console.log(`Opening folder: ${folderId}`);
+            // Add folder opening logic here
+        }
+
+        function openFile(fileId) {
+            console.log(`Opening file: ${fileId}`);
+            // Add file opening logic here
+        }
+    </script>
 </body>
 </html>
